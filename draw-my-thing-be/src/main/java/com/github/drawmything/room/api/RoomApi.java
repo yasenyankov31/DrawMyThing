@@ -6,6 +6,7 @@ import static org.springframework.http.HttpStatus.OK;
 
 import com.github.drawmything.room.model.request.RoomCreateRequest;
 import com.github.drawmything.room.service.RoomService;
+import com.github.drawmything.websocket.service.BroadcastService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -25,6 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class RoomApi {
 
   RoomService roomService;
+  BroadcastService broadcastService;
 
   @ResponseStatus(CREATED)
   @PostMapping
@@ -37,6 +39,14 @@ public class RoomApi {
   @PatchMapping("{id}/join")
   public ResponseEntity<Void> join(@PathVariable Long id) {
     roomService.addCurrentUser(id);
+    return ResponseEntity.ok().build();
+  }
+
+  @ResponseStatus(OK)
+  @PatchMapping("{id}/start")
+  public ResponseEntity<Void> start(@PathVariable Long id) {
+    var room = roomService.start(id);
+    broadcastService.notifyRoomStarted(room);
     return ResponseEntity.ok().build();
   }
 }
