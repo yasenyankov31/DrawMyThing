@@ -36,4 +36,10 @@ public class UserApi {
   public boolean isUsernameTaken(@RequestBody String username) {
     return userService.isUsernameTaken(username);
   }
+
+  @ResponseStatus(OK)
+  @GetMapping("/current")
+  public UserModel getCurrent() {
+    return UserAssembler.toDto(userService.getCurrentUser());
+  }
 }
