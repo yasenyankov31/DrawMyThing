@@ -20,12 +20,11 @@ function Home() {
       style={{ minHeight: "100vh" }}
     >
       <h1 className="mb-4 display-1 text-white bold fw-bold">Draw my thing</h1>
-      {!isAuth && (
+      {!isAuth ? (
         <Button as={Link} to="/login" variant="primary mt-5">
           <h2 className="display-10 text-white bold fw-bold">Start playing</h2>
         </Button>
-      )}
-      {isAuth && (
+      ) : (
         <Container>
           <Row className="justify-content-md-center">
             <Col md="6">
@@ -65,7 +64,12 @@ function Home() {
                       Play!
                     </Button>
 
-                    <Button variant="secondary" className="mb-3">
+                    <Button
+                      as={Link}
+                      to={"/game-settings"}
+                      variant="secondary"
+                      className="mb-3"
+                    >
                       Create Private Room
                     </Button>
                   </Form>
