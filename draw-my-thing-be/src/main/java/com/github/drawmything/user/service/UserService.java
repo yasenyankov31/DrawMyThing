@@ -8,5 +8,7 @@ public interface UserService {
 
   User create(UserCreateRequest request);
 
+  boolean isUsernameTaken(String username);
+
   Optional<User> getByUsername(String username);
 }

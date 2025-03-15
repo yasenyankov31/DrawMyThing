@@ -23,22 +23,22 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public User create(UserCreateRequest request) {
-    checkUsernameIsUnique(request.username());
+    if (isUsernameTaken(request.username())) {
+      throw new IllegalArgumentException("Used username is taken: " + request.username());
+    }
+
     var encodedPass = passwordEncoder.encode(request.password());
     var user = User.builder().username(request.username()).password(encodedPass).build();
     return userRepository.save(user);
   }
 
   @Override
-  public Optional<User> getByUsername(String username) {
-    return userRepository.findByUsername(username);
+  public boolean isUsernameTaken(String username) {
+    return Optional.ofNullable(username).flatMap(userRepository::findByUsername).isPresent();
   }
 
-  private void checkUsernameIsUnique(String username) {
-    var isUsernameTaken =
-        Optional.ofNullable(username).flatMap(userRepository::findByUsername).isPresent();
-    if (isUsernameTaken) {
-      throw new IllegalArgumentException("Used username is taken: " + username);
-    }
+  @Override
+  public Optional<User> getByUsername(String username) {
+    return userRepository.findByUsername(username);
   }
 }
