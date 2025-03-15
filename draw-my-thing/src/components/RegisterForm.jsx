@@ -1,20 +1,14 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { Container, Form, Button, Card, Alert } from "react-bootstrap";
 
-function AuthForm() {
-  const [isLogin, setIsLogin] = useState(true);
+function RegisterForm() {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
     name: "",
   });
   const [error, setError] = useState("");
-
-  const toggleForm = () => {
-    setIsLogin(!isLogin);
-    setFormData({ email: "", password: "", name: "" });
-    setError("");
-  };
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -23,11 +17,11 @@ function AuthForm() {
   const handleSubmit = (e) => {
     e.preventDefault();
     setError("");
-    if (!formData.email || !formData.password || (!isLogin && !formData.name)) {
+    if (!formData.email || !formData.password || !formData.name) {
       setError("All fields are required");
       return;
     }
-    alert(`${isLogin ? "Logged in" : "Registered"} successfully!`);
+    alert("Registered successfully!");
   };
 
   return (
@@ -37,21 +31,19 @@ function AuthForm() {
     >
       <Card style={{ width: "25rem" }}>
         <Card.Body>
-          <h2 className="text-center">{isLogin ? "Login" : "Register"}</h2>
+          <h2 className="text-center">Register</h2>
           {error && <Alert variant="danger">{error}</Alert>}
           <Form onSubmit={handleSubmit}>
-            {!isLogin && (
-              <Form.Group className="mb-3" controlId="name">
-                <Form.Label>Name</Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder="Enter name"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                />
-              </Form.Group>
-            )}
+            <Form.Group className="mb-3" controlId="name">
+              <Form.Label>Name</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter name"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+              />
+            </Form.Group>
             <Form.Group className="mb-3" controlId="email">
               <Form.Label>Email address</Form.Label>
               <Form.Control
@@ -73,14 +65,12 @@ function AuthForm() {
               />
             </Form.Group>
             <Button variant="primary" type="submit" className="w-100">
-              {isLogin ? "Login" : "Register"}
+              Register
             </Button>
           </Form>
           <div className="text-center mt-3">
-            <Button variant="link" onClick={toggleForm}>
-              {isLogin
-                ? "Don't have an account? Register"
-                : "Already have an account? Login"}
+            <Button as={Link} to="/login" variant="link">
+              Already have an account? Login
             </Button>
           </div>
         </Card.Body>
@@ -89,4 +79,4 @@ function AuthForm() {
   );
 }
 
-export default AuthForm;
+export default RegisterForm;

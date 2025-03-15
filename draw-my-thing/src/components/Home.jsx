@@ -8,7 +8,7 @@ function Home() {
       style={{ minHeight: "100vh" }}
     >
       <h1 className="mb-4 display-1 text-white bold fw-bold">Draw my thing</h1>
-      <Button as={Link} to="/auth" variant="primary mt-5">
+      <Button as={Link} to="/login" variant="primary mt-5">
         <h2 className="display-10 text-white bold fw-bold">Start playing</h2>
       </Button>
     </Container>
