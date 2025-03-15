@@ -1,0 +1,9 @@
+package com.github.drawmything.room.service;
+
+import com.github.drawmything.room.model.Room;
+import com.github.drawmything.room.model.request.RoomCreateRequest;
+
+public interface RoomService {
+
+  Room create(RoomCreateRequest request);
+}
