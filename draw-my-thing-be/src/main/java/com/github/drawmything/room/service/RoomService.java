@@ -8,4 +8,6 @@ public interface RoomService {
   Room create(RoomCreateRequest request);
 
   Room addCurrentUser(Long roomId);
+
+  Room start(Long roomId);
 }

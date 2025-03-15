@@ -36,6 +36,9 @@ public class Room {
   @Column(nullable = false)
   Byte wordsCount;
 
+  @Column(length = 20, nullable = false)
+  RoomStatus status;
+
   @Builder.Default
   @OneToMany(fetch = LAZY, mappedBy = "room")
   List<RoomParticipation> participations = new LinkedList<>();
