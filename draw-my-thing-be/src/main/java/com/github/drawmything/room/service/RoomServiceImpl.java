@@ -8,7 +8,6 @@ import com.github.drawmything.room.model.RoomRepository;
 import com.github.drawmything.room.model.participation.RoomParticipation;
 import com.github.drawmything.room.model.participation.RoomParticipationRepository;
 import com.github.drawmything.room.model.request.RoomCreateRequest;
-import com.github.drawmything.user.model.User;
 import com.github.drawmything.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -36,16 +35,23 @@ public class RoomServiceImpl implements RoomService {
             .wordsCount(request.wordsCount().byteValue())
             .build();
     room = roomRepository.save(room);
-
-    var currentUser = userService.getCurrentUser();
-    var participation = createParticipation(room, currentUser);
-    room.getParticipations().add(participation);
+    createParticipationWithCurrentUser(room);
     return room;
   }
 
-  private RoomParticipation createParticipation(Room room, User percipient) {
+  @Override
+  public Room addCurrentUser(Long roomId) {
+    var room = roomRepository.getReferenceById(roomId);
+    createParticipationWithCurrentUser(room);
+    return room;
+  }
+
+  private void createParticipationWithCurrentUser(Room room) {
+    var currentUser = userService.getCurrentUser();
+
     var participation =
-        RoomParticipation.builder().room(room).percipient(percipient).score(0).build();
-    return participationRepository.save(participation);
+        RoomParticipation.builder().room(room).percipient(currentUser).score(0).build();
+    participation = participationRepository.save(participation);
+    room.getParticipations().add(participation);
   }
 }
