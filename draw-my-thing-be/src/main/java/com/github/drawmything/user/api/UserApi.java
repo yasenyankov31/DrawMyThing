@@ -4,7 +4,7 @@ import static lombok.AccessLevel.PRIVATE;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
 
-import com.github.drawmything.user.model.User;
+import com.github.drawmything.user.model.dto.UserModel;
 import com.github.drawmything.user.model.request.UserCreateRequest;
 import com.github.drawmything.user.service.UserService;
 import jakarta.validation.Valid;
@@ -27,8 +27,8 @@ public class UserApi {
 
   @ResponseStatus(CREATED)
   @PostMapping
-  public User create(@Valid @RequestBody UserCreateRequest request) {
-    return userService.create(request);
+  public UserModel create(@Valid @RequestBody UserCreateRequest request) {
+    return UserAssembler.toDto(userService.create(request));
   }
 
   @ResponseStatus(OK)
