@@ -92,7 +92,10 @@ public class SecurityConfig {
   }
 
   private static RequestMatcher[] permittedApiRequests() {
-    return new RequestMatcher[] {new AntPathRequestMatcher("/api/users", POST.name())};
+    return new RequestMatcher[] {
+      new AntPathRequestMatcher("/api/users", POST.name()),
+      new AntPathRequestMatcher("/api/users/exists/username", GET.name())
+    };
   }
 
   private static String[] permittedHtmlRequests() {
