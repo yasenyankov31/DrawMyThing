@@ -2,6 +2,7 @@ package com.github.drawmything.config;
 
 import static jakarta.servlet.DispatcherType.FORWARD;
 import static org.springframework.http.HttpMethod.GET;
+import static org.springframework.http.HttpMethod.POST;
 import static org.springframework.security.config.Customizer.withDefaults;
 
 import org.springframework.context.annotation.Bean;
@@ -17,6 +18,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.util.matcher.RequestMatcher;
 
 @Configuration
 public class SecurityConfig {
@@ -29,7 +31,13 @@ public class SecurityConfig {
         .requestCache(withDefaults())
         .csrf(CsrfConfigurer::disable)
         .cors(CorsConfigurer::disable)
-        .authorizeHttpRequests(requests -> requests.requestMatchers(APIS).fullyAuthenticated())
+        .authorizeHttpRequests(
+            requests ->
+                requests
+                    .requestMatchers(permittedApiRequests())
+                    .permitAll()
+                    .requestMatchers(APIS)
+                    .fullyAuthenticated())
         .build();
   }
 
@@ -81,6 +89,13 @@ public class SecurityConfig {
     var authProvider = new DaoAuthenticationProvider(passwordEncoder);
     authProvider.setUserDetailsService(userDetailsService);
     return authProvider;
+  }
+
+  private static RequestMatcher[] permittedApiRequests() {
+    return new RequestMatcher[] {
+      new AntPathRequestMatcher("/api/users", POST.name()),
+      new AntPathRequestMatcher("/api/users/exists/username", GET.name())
+    };
   }
 
   private static String[] permittedHtmlRequests() {
