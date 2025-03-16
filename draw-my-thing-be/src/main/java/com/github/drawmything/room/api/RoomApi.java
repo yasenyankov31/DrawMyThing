@@ -56,4 +56,11 @@ public class RoomApi {
     roomService.setActiveWord(id, word);
     return ResponseEntity.ok().build();
   }
+
+  @ResponseStatus(OK)
+  @PatchMapping("{id}/guess")
+  public ResponseEntity<Void> addGuess(@PathVariable Long id, @RequestBody String guess) {
+    roomService.addGuess(id, guess);
+    return ResponseEntity.ok().build();
+  }
 }

@@ -1,6 +1,7 @@
 package com.github.drawmything.room.service;
 
 import static com.github.drawmything.room.model.RoomStatus.*;
+import static com.github.drawmything.util.SecurityUtils.getCurrentUsername;
 import static java.util.UUID.randomUUID;
 import static lombok.AccessLevel.PRIVATE;
 
@@ -73,6 +74,26 @@ public class RoomServiceImpl implements RoomService {
     }
 
     room.setActiveWord(word);
+    return room;
+  }
+
+  @Override
+  public Room addGuess(Long id, String guess) {
+    if (guess == null || "".equals(guess.trim())) {
+      throw new IllegalArgumentException("The guess cannot be null or blank!");
+    }
+
+    var room = roomRepository.getReferenceById(id);
+    var userParticipation =
+        room.getParticipations().stream()
+            .filter(p -> p.getPercipient().getUsername().equals(getCurrentUsername()))
+            .findFirst()
+            .orElseThrow(
+                () ->
+                    new IllegalArgumentException(
+                        "No participation found for username: " + getCurrentUsername()));
+
+    userParticipation.getGuesses().add(guess);
     return room;
   }
 
