@@ -1,3 +1,53 @@
+server:
+  servlet:
+    session:
+      persistent: true
+      cookie:
+        same-site: None
+        secure: true
+    encoding.charset: UTF-8
+
+  compression:
+    enabled: true
+    mime-types: text/html,text/plain,text/css,text/javascript,application/json
+    min-response-size: 1024
+
+  http2.enabled: true
+  error.include-stacktrace: never
+
 spring:
   application:
     name: draw-my-thing
+
+  transaction.default-timeout: 30
+
+  datasource.hikari.maximum-pool-size: 20
+
+  resources.cache.cachecontrol:
+    max-age: 365D
+    must-revalidate: true
+    cache-public: true
+
+  jackson:
+    default-property-inclusion: non_null
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/draw_my_thing
+    username: ${DB_USER:root}
+    password: ${DB_PASSWORD:root}
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    open-in-view: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate.session.events.log.LOG_QUERIES_SLOWER_THAN_MS: 500
+      hibernate.orm.cache.use_query_cache: true
+      hibernate.jdbc.batch_size: 1000
+      hibernate.id.db_structure_naming_strategy: single
+
+springdoc:
+  api-docs.enabled: true
+  swagger-ui.enabled: true
+  pathsToMatch: /api/**
