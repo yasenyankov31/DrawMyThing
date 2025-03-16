@@ -45,6 +45,8 @@ public class Room {
   @Column(length = 255)
   String activeWord;
 
+  Byte currentRound;
+
   @Column(length = 20, nullable = false)
   @Enumerated(STRING)
   RoomStatus status;
@@ -52,4 +54,31 @@ public class Room {
   @Builder.Default
   @OneToMany(fetch = LAZY, mappedBy = "room")
   List<RoomParticipation> participations = new LinkedList<>();
+
+  public void addScoresToParticipients() {
+    participations.stream()
+        .filter(participation -> participation.getGuesses().contains(activeWord))
+        .forEach(RoomParticipation::addScoresForCorrectAnswer);
+    clearGuesses();
+  }
+
+  public void nextRound() {
+    this.activeWord = null;
+
+    if (rounds.equals(currentRound)) {
+      currentRound = null;
+      status = RoomStatus.CLOSED;
+      return;
+    }
+
+    if (currentRound == null) {
+      currentRound = 0;
+    }
+
+    currentRound = (byte) (currentRound + 1);
+  }
+
+  private void clearGuesses() {
+    participations.stream().forEach(participation -> participation.setGuesses(List.of()));
+  }
 }

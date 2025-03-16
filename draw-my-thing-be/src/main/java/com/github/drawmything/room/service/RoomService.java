@@ -14,4 +14,6 @@ public interface RoomService {
   Room setActiveWord(Long id, String word);
 
   Room addGuess(Long id, String guess);
+
+  Room finishRound(Long id);
 }

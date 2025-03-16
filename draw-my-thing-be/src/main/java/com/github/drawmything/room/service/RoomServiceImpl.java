@@ -97,6 +97,18 @@ public class RoomServiceImpl implements RoomService {
     return room;
   }
 
+  @Override
+  public Room finishRound(Long id) {
+    var room = roomRepository.getReferenceById(id);
+    if (STARTED != room.getStatus()) {
+      throw new IllegalArgumentException("Cannot finish round for not started room!");
+    }
+
+    room.addScoresToParticipients();
+    room.nextRound();
+    return room;
+  }
+
   private void createParticipationWithCurrentUser(Room room) {
     var currentUser = userService.getCurrentUser();
 

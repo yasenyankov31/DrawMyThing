@@ -4,6 +4,7 @@ import static lombok.AccessLevel.PRIVATE;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
 
+import com.github.drawmything.room.model.dto.RoomModel;
 import com.github.drawmything.room.model.request.RoomCreateRequest;
 import com.github.drawmything.room.service.RoomService;
 import com.github.drawmything.websocket.service.BroadcastService;
@@ -62,5 +63,11 @@ public class RoomApi {
   public ResponseEntity<Void> addGuess(@PathVariable Long id, @RequestBody String guess) {
     roomService.addGuess(id, guess);
     return ResponseEntity.ok().build();
+  }
+
+  @ResponseStatus(OK)
+  @PatchMapping("{id}/finish-round")
+  public RoomModel finishRound(@PathVariable Long id) {
+    return RoomAssembler.toDto(roomService.finishRound(id));
   }
 }
