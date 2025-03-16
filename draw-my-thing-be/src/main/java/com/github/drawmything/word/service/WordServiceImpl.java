@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @FieldDefaults(level = PRIVATE, makeFinal = true)
-public class WordServiceImpl {
+public class WordServiceImpl implements WordService {
 
   List<String> words;
   Random random;
@@ -21,6 +21,7 @@ public class WordServiceImpl {
     this.random = new Random();
   }
 
+  @Override
   public List<String> getRandomWords(int count) {
     if (count <= 0) {
       throw new IllegalArgumentException("Count must be atleast 1!");
