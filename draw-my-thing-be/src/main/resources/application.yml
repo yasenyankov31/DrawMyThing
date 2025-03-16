@@ -51,3 +51,5 @@ springdoc:
   api-docs.enabled: true
   swagger-ui.enabled: true
   pathsToMatch: /api/**
+
+words: apple,banana,cherry,date,elderberry,fig,grape,honeydew
