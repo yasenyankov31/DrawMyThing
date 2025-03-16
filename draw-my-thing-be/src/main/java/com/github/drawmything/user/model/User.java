@@ -7,15 +7,19 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
 @Table(name = "`users`")
 @Entity
 @Data
 @Builder
-@FieldDefaults(level = PRIVATE, makeFinal = true)
+@NoArgsConstructor
+@AllArgsConstructor
+@FieldDefaults(level = PRIVATE)
 public class User {
 
   @Id @GeneratedValue Long id;
