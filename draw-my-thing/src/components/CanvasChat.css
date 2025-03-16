@@ -1,0 +1,18 @@
+.game-chat-container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.scroller {
+  overflow: auto;
+  height: 650px;
+  display: flex;
+  flex-direction: column-reverse;
+  overflow-anchor: auto !important;
+}
+
+.scroller .scroller-content .item {
+  height: 20px;
+  transform: translateZ(0);
+}
