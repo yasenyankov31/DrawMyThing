@@ -49,4 +49,8 @@ public class RoomParticipation {
   @Column(name = "guess")
   @Builder.Default
   List<String> guesses = new LinkedList<>();
+
+  public void addScoresForCorrectAnswer() {
+    this.score += 100;
+  }
 }
