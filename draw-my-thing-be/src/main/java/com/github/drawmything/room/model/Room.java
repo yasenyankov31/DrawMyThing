@@ -42,6 +42,9 @@ public class Room {
   @Column(nullable = false)
   Byte wordsCount;
 
+  @Column(length = 255)
+  String activeWord;
+
   @Column(length = 20, nullable = false)
   @Enumerated(STRING)
   RoomStatus status;

@@ -58,7 +58,21 @@ public class RoomServiceImpl implements RoomService {
     if (room.getParticipations().size() < 3) {
       throw new IllegalArgumentException("Room doesn't have enough participients!");
     }
-    room.setStatus(CREATED);
+    room.setStatus(STARTED);
+    return room;
+  }
+
+  @Override
+  public Room setActiveWord(Long id, String word) {
+    var room = roomRepository.getReferenceById(id);
+    if (STARTED != room.getStatus()) {
+      throw new IllegalAccessError("Room must be started to be set word!");
+    }
+    if (word == null || "".equals(word.trim())) {
+      throw new IllegalAccessError("Word must not be blank!");
+    }
+
+    room.setActiveWord(word);
     return room;
   }
 
