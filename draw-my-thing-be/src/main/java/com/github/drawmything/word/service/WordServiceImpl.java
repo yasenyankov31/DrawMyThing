@@ -1,4 +1,4 @@
-package com.github.drawmything.words;
+package com.github.drawmything.word.service;
 
 import static java.util.Collections.shuffle;
 import static lombok.AccessLevel.PRIVATE;

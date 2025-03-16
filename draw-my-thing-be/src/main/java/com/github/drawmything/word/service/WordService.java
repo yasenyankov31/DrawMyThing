@@ -1,4 +1,4 @@
-package com.github.drawmything.words;
+package com.github.drawmything.word.service;
 
 import java.util.List;
 
