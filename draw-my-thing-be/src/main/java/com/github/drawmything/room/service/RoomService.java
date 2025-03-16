@@ -10,4 +10,6 @@ public interface RoomService {
   Room addCurrentUser(Long roomId);
 
   Room start(Long roomId);
+
+  Room setActiveWord(Long id, String word);
 }

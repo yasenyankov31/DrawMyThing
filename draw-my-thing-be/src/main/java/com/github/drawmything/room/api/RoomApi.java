@@ -49,4 +49,11 @@ public class RoomApi {
     broadcastService.notifyRoomStarted(room);
     return ResponseEntity.ok().build();
   }
+
+  @ResponseStatus(OK)
+  @PatchMapping("{id}/word")
+  public ResponseEntity<Void> setActiveWord(@PathVariable Long id, @RequestBody String word) {
+    roomService.setActiveWord(id, word);
+    return ResponseEntity.ok().build();
+  }
 }
