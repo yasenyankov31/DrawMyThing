@@ -64,6 +64,8 @@
 }
 
 .button {
+  display: flex;
+  justify-content: center;
   padding: 5px 10px;
   color: white;
   background-color: #68bef7;
@@ -71,6 +73,10 @@
   cursor: pointer;
   border-radius: 5px;
   font-weight: bolder;
+}
+
+.button-text {
+  margin: 5px;
 }
 
 .button:hover {
@@ -98,4 +104,12 @@
 .custom-slider {
   width: 70%;
   margin: 0 auto;
+}
+
+.pen-preview-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
+  height: 50px;
 }

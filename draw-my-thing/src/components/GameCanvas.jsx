@@ -228,7 +228,7 @@ const GameCanvas = () => {
                   setSelectedTool("pen");
                 }}
               >
-                Pen
+                <div className="button-text">Pen</div>
                 <img
                   className="p-1"
                   width="30px"
@@ -247,7 +247,7 @@ const GameCanvas = () => {
                   setSelectedTool("bucket");
                 }}
               >
-                Bucket
+                <div className="button-text"> Bucket</div>
                 <img
                   className="p-1"
                   width="30px"
@@ -266,7 +266,7 @@ const GameCanvas = () => {
                   setSelectedTool("eraser");
                 }}
               >
-                Eraser
+                <div className="button-text">Eraser</div>
                 <img
                   className="p-1"
                   width="30px"
@@ -277,7 +277,7 @@ const GameCanvas = () => {
               </div>
 
               <div className="button" onClick={clearCanvas}>
-                Clear All
+                <div className="button-text">Clear All</div>
                 <img
                   className="p-1"
                   width="30"
@@ -294,11 +294,23 @@ const GameCanvas = () => {
           <Form.Label>Pen Size</Form.Label>
           <Form.Range
             value={penSize}
-            min={1}
+            min={15}
             max={40}
             onChange={handleSliderChange}
             className="custom-slider"
           />
+          <div className="pen-preview-container">
+            <div
+              style={{
+                width: `${penSize}px`,
+                height: `${penSize}px`,
+                borderRadius: "50%",
+                backgroundColor:
+                  selectedToolRef.current === "pen" ? color : "#FFFFFF",
+                border: "1px solid #000",
+              }}
+            ></div>
+          </div>
         </Col>
       </Row>
     </div>
