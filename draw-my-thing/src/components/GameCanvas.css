@@ -32,6 +32,7 @@
 
 .canvas {
   border: 1px solid black;
+  cursor: crosshair;
 }
 
 .controls-container {
@@ -64,11 +65,37 @@
 
 .button {
   padding: 5px 10px;
-  background-color: #f0f0f0;
+  color: white;
+  background-color: #68bef7;
   border: 1px solid #ccc;
   cursor: pointer;
+  border-radius: 5px;
+  font-weight: bolder;
 }
 
 .button:hover {
-  background-color: #e0e0e0;
+  color: black;
+}
+
+.selected {
+  border: 3px solid white;
+}
+
+.selected-color {
+  border: 3px solid black;
+}
+
+.outer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #152128f0;
+  height: 100vh;
+  width: 100vw;
+  color: rgb(191, 210, 210);
+}
+
+.custom-slider {
+  width: 70%;
+  margin: 0 auto;
 }
