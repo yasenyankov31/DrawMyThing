@@ -28,11 +28,41 @@ const GameCanvas = () => {
     "#000000",
   ];
 
+  const selectTool = (tool) => {
+    selectedToolRef.current = tool;
+    setSelectedTool(tool);
+  };
+
+  const KEY_B = 66;
+  const KEY_C = 67;
+  const KEY_D = 68;
+  const KEY_E = 69;
+
+  const handleKeyDown = (event) => {
+    switch (event.keyCode) {
+      case KEY_D:
+        selectTool("pen");
+        break;
+      case KEY_E:
+        selectTool("eraser");
+        break;
+      case KEY_B:
+        selectTool("bucket");
+        break;
+      case KEY_C:
+        clearCanvas();
+        break;
+      default:
+        break;
+    }
+  };
+
   useEffect(() => {
     const canvas = canvasRef.current;
     ctxRef.current = canvas.getContext("2d", { willReadFrequently: true });
     ctxRef.current.fillStyle = "#ffffff";
     ctxRef.current.fillRect(0, 0, canvas.width, canvas.height);
+    document.addEventListener("keydown", handleKeyDown);
   }, []);
 
   useEffect(() => {
@@ -141,7 +171,7 @@ const GameCanvas = () => {
     const y = Math.round(e.clientY - rect.top);
     const oldColor = getPixelColor(ctxRef.current, x, y);
 
-    if (colorMatch(oldColor, color, 40)) return;
+    if (colorMatch(oldColor, color, 10)) return;
 
     floodFill(ctxRef.current, x, y, oldColor, color);
   };
@@ -165,9 +195,6 @@ const GameCanvas = () => {
       data[index + 2] = rgb[2];
       data[index + 3] = 255; // Fully opaque
     };
-
-    if (getColorAt(startX, startY) !== oldColor) return;
-
     const newRGB = hexToRGB(newColor);
 
     const stack = [[startX, startY]];
@@ -194,6 +221,22 @@ const GameCanvas = () => {
     penSizeRef.current = newSize;
   };
 
+  const tools = [
+    { name: "pen", label: "Pen", icon: "../../pen.png", shortcut: "D" },
+    {
+      name: "bucket",
+      label: "Bucket",
+      icon: "../../bucket.png",
+      shortcut: "B",
+    },
+    {
+      name: "eraser",
+      label: "Eraser",
+      icon: "../../eraser.png",
+      shortcut: "E",
+    },
+  ];
+
   return (
     <div className="canvas-container">
       <canvas ref={canvasRef} width={800} height={600} className="canvas" />
@@ -201,91 +244,73 @@ const GameCanvas = () => {
         <Col md={8}>
           {" "}
           <div className="controls-container">
-            <div className="color-palette">
-              {colors.map((color, index) => (
-                <div
-                  key={index}
-                  className={`color-box ${
-                    selectedColor === color
-                      ? selectedColor === "#000000"
-                        ? "selected"
-                        : "selected-color"
-                      : ""
-                  }`}
-                  style={{ backgroundColor: color }}
-                  onClick={() => {
-                    setColor(color);
-                    setSelectedColor(color);
-                  }}
-                />
-              ))}
-            </div>
-            <div className="buttons-container">
-              <div
-                className={`button ${selectedTool === "pen" ? "selected" : ""}`}
-                onClick={() => {
-                  selectedToolRef.current = "pen";
-                  setSelectedTool("pen");
-                }}
-              >
-                <div className="button-text">Pen</div>
-                <img
-                  className="p-1"
-                  width="30px"
-                  height="30px"
-                  src="../../pen.png"
-                  alt="Pen"
-                />
+            <div className="palet-tools-container">
+              {" "}
+              <div className="color-palette">
+                {colors.map((color, index) => (
+                  <div
+                    key={index}
+                    className={`color-box ${
+                      selectedColor === color
+                        ? selectedColor === "#000000"
+                          ? "selected"
+                          : "selected-color"
+                        : ""
+                    }`}
+                    style={{ backgroundColor: color }}
+                    onClick={() => {
+                      setColor(color);
+                      setSelectedColor(color);
+                    }}
+                  />
+                ))}
               </div>
-
-              <div
-                className={`button ${
-                  selectedTool === "bucket" ? "selected" : ""
-                }`}
-                onClick={() => {
-                  selectedToolRef.current = "bucket";
-                  setSelectedTool("bucket");
-                }}
-              >
-                <div className="button-text"> Bucket</div>
-                <img
-                  className="p-1"
-                  width="30px"
-                  height="30px"
-                  src="../../bucket.png"
-                  alt="Bucket"
-                />
+              <div className="buttons-container">
+                {tools.map((tool) => (
+                  <span
+                    className="d-inline-block"
+                    tabIndex="0"
+                    data-toggle="tooltip"
+                    title={`Shortcut: ${tool.shortcut} key`}
+                    key={tool.name}
+                  >
+                    <div
+                      key={tool.name}
+                      className={`button ${
+                        selectedTool === tool.name ? "selected" : ""
+                      }`}
+                      onClick={() => selectTool(tool.name)}
+                    >
+                      <div className="button-text">{tool.label}</div>
+                      <img
+                        className="p-1"
+                        width="30"
+                        height="30"
+                        src={tool.icon}
+                        alt={tool.label}
+                      />
+                    </div>
+                  </span>
+                ))}
+                <span
+                  className="d-inline-block"
+                  tabIndex="0"
+                  data-toggle="tooltip"
+                  title="Shortcut: C key"
+                >
+                  <div className="button" onClick={clearCanvas}>
+                    <div className="button-text">Clear All</div>
+                    <img
+                      className="p-1"
+                      width="30"
+                      height="30"
+                      src="../../bin.png"
+                      alt="Clear All"
+                    />
+                  </div>
+                </span>
               </div>
-
-              <div
-                className={`button ${
-                  selectedTool === "eraser" ? "selected" : ""
-                }`}
-                onClick={() => {
-                  selectedToolRef.current = "eraser";
-                  setSelectedTool("eraser");
-                }}
-              >
-                <div className="button-text">Eraser</div>
-                <img
-                  className="p-1"
-                  width="30px"
-                  height="30px"
-                  src="../../eraser.png"
-                  alt="Eraser"
-                />
-              </div>
-
-              <div className="button" onClick={clearCanvas}>
-                <div className="button-text">Clear All</div>
-                <img
-                  className="p-1"
-                  width="30"
-                  height="30"
-                  src="../../bin.png"
-                  alt="Clear All"
-                />
-              </div>
+              ;
             </div>
           </div>
         </Col>
@@ -306,7 +331,7 @@ const GameCanvas = () => {
                 height: `${penSize}px`,
                 borderRadius: "50%",
                 backgroundColor:
-                  selectedToolRef.current === "pen" ? color : "#FFFFFF",
+                  selectedToolRef.current !== "eraser" ? color : "#FFFFFF",
                 border: "1px solid #000",
               }}
             ></div>
